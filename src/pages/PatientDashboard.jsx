@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
@@ -334,29 +335,26 @@ export default function PatientDashboard() {
       </div>
       <div className="flex gap-4 mt-6 flex-wrap">
 
-  <a href="/chatbot">
-    <button className="bg-purple-600 text-white px-4 py-2 rounded-xl">
-      Chatbot
-    </button>
-  </a>
-
-  <a href="/appointment">
+<Link to="/chatbot">
+  <button className="bg-cyan-600 text-white px-4 py-2 rounded-xl">Chatbot</button>
+</Link>
+  <Link to="/appointment">
     <button className="bg-green-600 text-white px-4 py-2 rounded-xl">
       Book Appointment
     </button>
-  </a>
+  </Link>
 
-  <a href="/video">
+  <Link to="/video">
     <button className="bg-blue-600 text-white px-4 py-2 rounded-xl">
       Video Call
     </button>
-  </a>
+</Link>
 
-  <a href="/doctor">
+  <Link to="/doctor">
     <button className="bg-red-600 text-white px-4 py-2 rounded-xl">
       Doctor Dashboard
     </button>
-  </a>
+  </Link>
 
 </div>
 {emergencyAlert && (
