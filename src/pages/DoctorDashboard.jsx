@@ -1,0 +1,262 @@
+import { useEffect, useState } from "react";
+
+import {
+  collection,
+  getDocs,
+} from "firebase/firestore";
+
+import { db } from "../firebase";
+
+
+
+export default function DoctorDashboard() {
+
+  const [patients, setPatients] = useState([]);
+  const [appointments, setAppointments] = useState([]);
+
+
+
+
+  const fetchPatients = async () => {
+
+    try {
+
+      const querySnapshot = await getDocs(
+
+        collection(db, "HealthRecords")
+
+      );
+
+      const records = [];
+
+      querySnapshot.forEach((doc) => {
+
+        records.push({
+
+          id: doc.id,
+
+          ...doc.data(),
+
+        });
+
+      });
+
+      setPatients(records);
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+  };
+  const fetchAppointments = async () => {
+
+  try {
+
+    const querySnapshot = await getDocs(
+
+      collection(db, "Appointments")
+
+    );
+
+    const records = [];
+
+    querySnapshot.forEach((doc) => {
+
+      records.push({
+
+        id: doc.id,
+
+        ...doc.data(),
+
+      });
+
+    });
+
+    setAppointments(records);
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+};
+
+
+
+
+useEffect(() => {
+
+  fetchPatients();
+
+  fetchAppointments();
+
+}, []);
+
+
+
+
+  return (
+
+    <div className="min-h-screen bg-gray-100 p-8">
+
+      <h1 className="text-4xl font-bold text-blue-700 mb-8">
+
+        Doctor Dashboard
+
+      </h1>
+
+
+
+
+      <div className="bg-white rounded-3xl shadow-2xl p-8">
+
+        <table className="w-full">
+
+          <thead>
+
+            <tr className="border-b text-left">
+
+              <th className="pb-4">
+                Patient Email
+              </th>
+
+              <th className="pb-4">
+                Glucose
+              </th>
+
+              <th className="pb-4">
+                Status
+              </th>
+
+            </tr>
+
+          </thead>
+
+
+
+
+          <tbody>
+
+            {patients.map((patient) => (
+
+              <tr
+                key={patient.id}
+                className="border-b"
+              >
+
+                <td className="py-4">
+
+                  {patient.userEmail}
+
+                </td>
+
+                <td>
+
+                  {patient.glucose}
+
+                </td>
+
+                <td
+                  className={`font-bold ${
+                    patient.status === "Critical"
+                      ? "text-red-600"
+                      : patient.status === "Normal"
+                      ? "text-green-600"
+                      : "text-yellow-600"
+                  }`}
+                >
+
+                  {patient.status}
+
+                </td>
+
+              </tr>
+
+            ))}
+
+          </tbody>
+
+        </table>
+        <div className="mt-10 bg-white rounded-3xl shadow-2xl p-8">
+
+  <h2 className="text-2xl font-bold mb-6">
+
+    Appointments
+
+  </h2>
+
+  <table className="w-full">
+
+    <thead>
+
+      <tr className="border-b text-left">
+
+        <th className="pb-4">
+          Patient
+        </th>
+
+        <th className="pb-4">
+          Doctor
+        </th>
+
+        <th className="pb-4">
+          Date
+        </th>
+
+        <th className="pb-4">
+          Time
+        </th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      {appointments.map((appointment) => (
+
+        <tr
+          key={appointment.id}
+          className="border-b"
+        >
+
+          <td className="py-4">
+
+            {appointment.patientEmail}
+
+          </td>
+
+          <td>
+
+            {appointment.doctor}
+
+          </td>
+
+          <td>
+
+            {appointment.date}
+
+          </td>
+
+          <td>
+
+            {appointment.time}
+
+          </td>
+
+        </tr>
+
+      ))}
+
+    </tbody>
+
+  </table>
+
+</div>
+
+      </div>
+
+    </div>
+  );
+}
