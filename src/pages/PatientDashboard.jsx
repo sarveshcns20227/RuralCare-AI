@@ -332,6 +332,33 @@ export default function PatientDashboard() {
         </p>
 
       </div>
+      <div className="flex gap-4 mt-6 flex-wrap">
+
+  <a href="/chatbot">
+    <button className="bg-purple-600 text-white px-4 py-2 rounded-xl">
+      Chatbot
+    </button>
+  </a>
+
+  <a href="/appointment">
+    <button className="bg-green-600 text-white px-4 py-2 rounded-xl">
+      Book Appointment
+    </button>
+  </a>
+
+  <a href="/video">
+    <button className="bg-blue-600 text-white px-4 py-2 rounded-xl">
+      Video Call
+    </button>
+  </a>
+
+  <a href="/doctor">
+    <button className="bg-red-600 text-white px-4 py-2 rounded-xl">
+      Doctor Dashboard
+    </button>
+  </a>
+
+</div>
 {emergencyAlert && (
 
   <div className="mb-8 bg-red-600 text-white p-6 rounded-3xl shadow-2xl">
