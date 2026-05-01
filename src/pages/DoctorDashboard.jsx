@@ -108,6 +108,40 @@ export default function DoctorDashboard() {
 
         <table className="w-full">
           <thead>
+            <th className="pb-4">Action</th>
+            <tr key={patient.id} className="border-b">
+
+  <td className="py-4">
+    {patient.userEmail}
+  </td>
+
+  <td>
+    {patient.glucose}
+  </td>
+
+  <td className={`font-bold ${
+    patient.status === "Critical"
+      ? "text-red-600"
+      : patient.status === "Normal"
+      ? "text-green-600"
+      : "text-yellow-600"
+  }`}>
+    {patient.status}
+  </td>
+
+  {/* 🔥 ADD THIS */}
+  <td>
+    {patient.status === "Critical" && (
+      <button
+        onClick={() => window.location.href = "/video"}
+        className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-xl"
+      >
+        Call Patient
+      </button>
+    )}
+  </td>
+
+</tr>
             <tr className="border-b text-left">
               <th className="pb-4">Patient</th>
               <th className="pb-4">Doctor</th>
