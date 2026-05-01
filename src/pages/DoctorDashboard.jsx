@@ -73,39 +73,63 @@ export default function DoctorDashboard() {
 
         <table className="w-full">
           <thead>
-            <tr className="border-b text-left">
-              <th className="pb-4">Patient Email</th>
-              <th className="pb-4">Glucose</th>
-              <th className="pb-4">Status</th>
-            </tr>
-          </thead>
+  <tr className="border-b text-left">
+    <th className="pb-4">Patient Email</th>
+    <th className="pb-4">Glucose</th>
+    <th className="pb-4">Status</th>
+    <th className="pb-4">Action</th>
+  </tr>
+</thead>
 
           <tbody>
-            {patients.map((patient) => (
-              <tr key={patient.id} className="border-b">
-                <td className="py-4">{patient.userEmail}</td>
-                <td>{patient.glucose}</td>
-                <td
-                  className={`font-bold ${
-                    patient.status === "Critical"
-                      ? "text-red-600"
-                      : patient.status === "Normal"
-                      ? "text-green-600"
-                      : "text-yellow-600"
-                  }`}
-                >
-                  {patient.status}
-                </td>
-              </tr>
-            ))}
-          </tbody>
+
+  {patients.map((patient) => (
+
+    <tr key={patient.id} className="border-b">
+
+      <td className="py-4">
+        {patient.userEmail}
+      </td>
+
+      <td>
+        {patient.glucose}
+      </td>
+
+      <td
+        className={`font-bold ${
+          patient.status === "Critical"
+            ? "text-red-600"
+            : patient.status === "Normal"
+            ? "text-green-600"
+            : "text-yellow-600"
+        }`}
+      >
+        {patient.status}
+      </td>
+
+      {/* 🔥 FIXED BUTTON (INSIDE MAP) */}
+      <td>
+        {patient.status === "Critical" && (
+          <button
+            onClick={() => (window.location.href = "/video")}
+            className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-xl"
+          >
+            Call Patient
+          </button>
+        )}
+      </td>
+
+    </tr>
+
+  ))}
+
+</tbody>
         </table>
       </div>
 
       {/* Appointments */}
       <div className="mt-10 bg-white rounded-3xl shadow-2xl p-8">
         <h2 className="text-2xl font-bold mb-6">Appointments</h2>
-
         <table className="w-full">
           <thead>
             <th className="pb-4">Action</th>
