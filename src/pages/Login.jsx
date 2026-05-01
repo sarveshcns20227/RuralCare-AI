@@ -1,75 +1,84 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 
-import { auth } from "../firebase";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
-
+import { auth, db } from "../firebase";
 
 export default function Login() {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
 
-
-
   const handleSignup = async () => {
-
     try {
-
-      await createUserWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
 
-    navigate("/dashboard");
-
-    } catch (error) {
-
-      alert(error.message);
-
-    }
-  };
-
-
-
-  const handleLogin = async () => {
-
-    try {
-
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      await addDoc(collection(db, "Users"), {
+        email: userCredential.user.email,
+        role: "patient",
+        createdAt: new Date(),
+      });
 
       navigate("/dashboard");
-
     } catch (error) {
-
       alert(error.message);
-
     }
   };
 
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
+      const q = query(
+        collection(db, "Users"),
+        where("email", "==", userCredential.user.email)
+      );
+
+      const snapshot = await getDocs(q);
+
+      let role = "patient";
+
+      snapshot.forEach((doc) => {
+        role = doc.data().role;
+      });
+
+      if (role === "doctor") {
+        navigate("/doctor");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   return (
-
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-600 to-cyan-500">
-
       <div className="bg-white p-10 rounded-3xl shadow-2xl w-[400px]">
-
         <h1 className="text-3xl font-bold mb-6 text-center text-blue-700">
           RuralCare AI
         </h1>
-
-
 
         <input
           type="email"
@@ -79,8 +88,6 @@ export default function Login() {
           className="w-full p-4 border rounded-2xl mb-4"
         />
 
-
-
         <input
           type="password"
           placeholder="Password"
@@ -89,8 +96,6 @@ export default function Login() {
           className="w-full p-4 border rounded-2xl mb-6"
         />
 
-
-
         <button
           onClick={handleLogin}
           className="w-full bg-blue-600 text-white py-3 rounded-2xl mb-4 hover:bg-blue-700"
@@ -98,17 +103,13 @@ export default function Login() {
           Login
         </button>
 
-
-
         <button
           onClick={handleSignup}
           className="w-full bg-green-600 text-white py-3 rounded-2xl hover:bg-green-700"
         >
           Create Account
         </button>
-
       </div>
-
     </div>
   );
 }
