@@ -51,12 +51,17 @@ export default function DoctorDashboard() {
     (patient) => patient.status === "Critical"
   );
 
+  const sortedPatients = [...patients].sort((a, b) => {
+    if (a.status === "Critical" && b.status !== "Critical") return -1;
+    if (a.status !== "Critical" && b.status === "Critical") return 1;
+    return 0;
+  });
+
   const handleCallPatient = (patient) => {
     const email =
       patient.userEmail ||
       patient.patientEmail ||
       patient.email ||
-      patient.uid ||
       "";
 
     if (!email) {
@@ -97,8 +102,13 @@ export default function DoctorDashboard() {
           </thead>
 
           <tbody>
-            {patients.map((patient) => (
-              <tr key={patient.id} className="border-b">
+            {sortedPatients.map((patient) => (
+              <tr
+                key={patient.id}
+                className={`border-b ${
+                  patient.status === "Critical" ? "bg-red-100" : ""
+                }`}
+              >
                 <td className="py-4">
                   {patient.userEmail ||
                     patient.patientEmail ||
@@ -117,17 +127,19 @@ export default function DoctorDashboard() {
                       : "text-yellow-600"
                   }`}
                 >
-                  {patient.status}
+                  {patient.status || "Unknown"}
                 </td>
 
                 <td>
-                  {patient.status === "Critical" && (
+                  {patient.status === "Critical" ? (
                     <button
                       onClick={() => handleCallPatient(patient)}
                       className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-xl"
                     >
                       Call Patient
                     </button>
+                  ) : (
+                    <span className="text-gray-400">No action</span>
                   )}
                 </td>
               </tr>
@@ -152,10 +164,12 @@ export default function DoctorDashboard() {
           <tbody>
             {appointments.map((appointment) => (
               <tr key={appointment.id} className="border-b">
-                <td className="py-4">{appointment.patientEmail}</td>
-                <td>{appointment.doctor}</td>
-                <td>{appointment.date}</td>
-                <td>{appointment.time}</td>
+                <td className="py-4">
+                  {appointment.patientEmail || "No patient email"}
+                </td>
+                <td>{appointment.doctor || "No doctor"}</td>
+                <td>{appointment.date || "No date"}</td>
+                <td>{appointment.time || "No time"}</td>
               </tr>
             ))}
           </tbody>
