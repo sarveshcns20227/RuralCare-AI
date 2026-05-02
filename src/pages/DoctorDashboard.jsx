@@ -89,7 +89,7 @@ export default function DoctorDashboard() {
   <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold">
     ● Live
   </span>
-</div>>
+</div>
 
       <div className="mb-10 bg-red-100 border-l-8 border-red-600 rounded-3xl shadow-xl p-6">
         <h2 className="text-2xl font-bold text-red-700 mb-2">
