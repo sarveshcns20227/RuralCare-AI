@@ -53,6 +53,10 @@ export default function VideoConsultation() {
   }
 };
 const endCall = () => {
+  const confirmEnd = window.confirm("Are you sure you want to end the call?");
+
+  if (!confirmEnd) return;
+
   if (videoRef.current && videoRef.current.srcObject) {
     const tracks = videoRef.current.srcObject.getTracks();
 
