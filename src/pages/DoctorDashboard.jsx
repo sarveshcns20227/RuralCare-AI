@@ -43,10 +43,16 @@ export default function DoctorDashboard() {
   };
 
   useEffect(() => {
+  fetchPatients();
+  fetchAppointments();
+
+  const interval = setInterval(() => {
     fetchPatients();
     fetchAppointments();
-  }, []);
+  }, 5000); // every 5 seconds
 
+  return () => clearInterval(interval);
+}, []);
   const criticalPatients = patients.filter(
     (patient) => patient.status === "Critical"
   );
