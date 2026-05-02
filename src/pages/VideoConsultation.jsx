@@ -4,6 +4,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 export default function VideoConsultation() {
   const videoRef = useRef(null);
   const navigate = useNavigate();
+  const [isMuted, setIsMuted] = useState(false);
 
   const [searchParams] = useSearchParams();
   const patientEmail = searchParams.get("patient");
@@ -40,6 +41,17 @@ export default function VideoConsultation() {
     const remainingSecs = secs % 60;
     return `${mins}:${remainingSecs < 10 ? "0" : ""}${remainingSecs}`;
   };
+  const toggleMute = () => {
+  if (videoRef.current && videoRef.current.srcObject) {
+    const audioTracks = videoRef.current.srcObject.getAudioTracks();
+
+    audioTracks.forEach((track) => {
+      track.enabled = isMuted;
+    });
+
+    setIsMuted(!isMuted);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-8">
@@ -75,9 +87,12 @@ export default function VideoConsultation() {
           End Call
         </button>
 
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold">
-          Mute
-        </button>
+        <button
+  onClick={toggleMute}
+  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold"
+>
+  {isMuted ? "Unmute" : "Mute"}
+</button>
       </div>
     </div>
   );
