@@ -52,6 +52,17 @@ export default function VideoConsultation() {
     setIsMuted(!isMuted);
   }
 };
+const endCall = () => {
+  if (videoRef.current && videoRef.current.srcObject) {
+    const tracks = videoRef.current.srcObject.getTracks();
+
+    tracks.forEach((track) => {
+      track.stop();
+    });
+  }
+
+  navigate("/doctor");
+};
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-8">
@@ -81,7 +92,7 @@ export default function VideoConsultation() {
 
       <div className="mt-8 flex gap-6">
         <button
-          onClick={() => navigate("/doctor")}
+          onClick={endCall}
           className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl font-bold"
         >
           End Call
