@@ -1,15 +1,25 @@
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function VideoConsultation() {
   const videoRef = useRef(null);
   const navigate = useNavigate();
+  const [seconds, setSeconds] = useState(0);
 
   const [searchParams] = useSearchParams();
   const patientEmail = searchParams.get("patient");
 
   useEffect(() => {
     startVideo();
+    useEffect(() => {
+  startVideo();
+
+  const interval = setInterval(() => {
+    setSeconds((prev) => prev + 1);
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, []);
   }, []);
 
   const startVideo = async () => {
@@ -26,6 +36,11 @@ export default function VideoConsultation() {
       console.error("Camera/Mic error:", error);
     }
   };
+  const formatTime = (secs) => {
+  const mins = Math.floor(secs / 60);
+  const remainingSecs = secs % 60;
+  return `${mins}:${remainingSecs < 10 ? "0" : ""}${remainingSecs}`;
+};
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-8">
@@ -38,6 +53,9 @@ export default function VideoConsultation() {
           Calling: {patientEmail}
         </p>
       )}
+      <p className="text-green-400 mb-4">
+  Call Time: {formatTime(seconds)}
+</p>
 
       <div className="bg-black rounded-3xl overflow-hidden shadow-2xl w-full max-w-4xl">
         <video
