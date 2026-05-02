@@ -1,8 +1,9 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 
 export default function VideoConsultation() {
   const videoRef = useRef(null);
+  const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
   const patientEmail = searchParams.get("patient");
@@ -49,9 +50,12 @@ export default function VideoConsultation() {
       </div>
 
       <div className="mt-8 flex gap-6">
-        <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl font-bold">
-          End Call
-        </button>
+        <button
+  onClick={() => navigate("/doctor")}
+  className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-2xl font-bold"
+>
+  End Call
+</button>
 
         <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold">
           Mute
