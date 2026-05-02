@@ -7,6 +7,8 @@ export default function VideoConsultation() {
   const [isMuted, setIsMuted] = useState(false);
   const [callStatus, setCallStatus] = useState("Connecting");
   const [callEnded, setCallEnded] = useState(false);
+  const [message, setMessage] = useState("");
+const [chatMessages, setChatMessages] = useState([]);
 
   const [searchParams] = useSearchParams();
   const patientEmail = searchParams.get("patient");
@@ -73,6 +75,22 @@ const endCall = () => {
 
   setCallEnded(true);
 };
+
+const sendMessage = () => {
+  if (!message.trim()) return;
+
+  setChatMessages((prev) => [
+    ...prev,
+    {
+      id: Date.now(),
+      text: message,
+      sender: "Doctor",
+    },
+  ]);
+
+  setMessage("");
+};
+
 const doctorName = "Dr. Sarvesh";
 const specialization = "Diabetologist";
 
@@ -145,6 +163,39 @@ if (callEnded) {
           className="w-full h-[500px] object-cover"
         />
       </div>
+      <div className="mt-6 bg-white/10 border border-white/20 rounded-2xl p-4 w-full max-w-4xl">
+  <h2 className="text-white font-bold text-xl mb-4">Call Chat</h2>
+
+  <div className="h-40 overflow-y-auto bg-black/30 rounded-xl p-3 mb-4">
+    {chatMessages.length === 0 ? (
+      <p className="text-gray-400">No messages yet.</p>
+    ) : (
+      chatMessages.map((chat) => (
+        <div key={chat.id} className="mb-2">
+          <span className="text-blue-400 font-bold">{chat.sender}: </span>
+          <span className="text-white">{chat.text}</span>
+        </div>
+      ))
+    )}
+  </div>
+
+  <div className="flex gap-3">
+    <input
+      type="text"
+      value={message}
+      onChange={(e) => setMessage(e.target.value)}
+      placeholder="Type a message..."
+      className="flex-1 p-3 rounded-xl outline-none"
+    />
+
+    <button
+      onClick={sendMessage}
+      className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold"
+    >
+      Send
+    </button>
+  </div>
+</div>
 
       <div className="mt-8 flex gap-6">
         <button
