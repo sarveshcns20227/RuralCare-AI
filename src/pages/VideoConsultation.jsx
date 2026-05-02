@@ -8,6 +8,7 @@ export default function VideoConsultation() {
 
   const [searchParams] = useSearchParams();
   const patientEmail = searchParams.get("patient");
+  const patientName = searchParams.get("name");
 
   const [seconds, setSeconds] = useState(0);
 
