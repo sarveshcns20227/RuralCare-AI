@@ -78,7 +78,11 @@ export default function DoctorDashboard() {
 
     const name = patient.name || patient.userName || "Patient";
 
-window.location.href = `/video?patient=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}`;
+window.location.href = `/video?patient=${encodeURIComponent(
+  email
+)}&name=${encodeURIComponent(name)}&glucose=${encodeURIComponent(
+  patient.glucose || ""
+)}&status=${encodeURIComponent(patient.status || "")}`;
   };
 
 

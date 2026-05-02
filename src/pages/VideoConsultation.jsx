@@ -11,6 +11,8 @@ export default function VideoConsultation() {
   const [searchParams] = useSearchParams();
   const patientEmail = searchParams.get("patient");
   const patientName = searchParams.get("name");
+  const patientGlucose = searchParams.get("glucose");
+const patientStatus = searchParams.get("status");
 
   const [seconds, setSeconds] = useState(0);
 
@@ -108,6 +110,25 @@ if (callEnded) {
       {patientEmail && (
         <p className="text-gray-300 mb-4 text-lg">
         Calling: {patientName || patientEmail}
+        {patientGlucose && (
+  <div className="bg-white/10 border border-white/20 rounded-2xl p-4 mb-6 text-white">
+    <h2 className="text-lg font-bold mb-2">Patient Health Summary</h2>
+
+    <p>Glucose: {patientGlucose} mg/dL</p>
+
+    <p
+      className={`font-bold ${
+        patientStatus === "Critical"
+          ? "text-red-400"
+          : patientStatus === "Normal"
+          ? "text-green-400"
+          : "text-yellow-400"
+      }`}
+    >
+      Status: {patientStatus}
+    </p>
+  </div>
+)}
         </p>
       )}
 
