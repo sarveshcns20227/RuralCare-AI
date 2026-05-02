@@ -5,6 +5,7 @@ export default function VideoConsultation() {
   const videoRef = useRef(null);
   const navigate = useNavigate();
   const [isMuted, setIsMuted] = useState(false);
+  const [callStatus, setCallStatus] = useState("Connecting");
 
   const [searchParams] = useSearchParams();
   const patientEmail = searchParams.get("patient");
@@ -30,8 +31,9 @@ export default function VideoConsultation() {
       });
 
       if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
+  videoRef.current.srcObject = stream;
+  setCallStatus("Live");
+}
     } catch (error) {
       console.error("Camera/Mic error:", error);
     }
@@ -74,10 +76,13 @@ const endCall = () => {
       <h1 className="text-4xl font-bold text-white mb-4">
         Video Consultation
       </h1>
+      <p className="bg-green-600 text-white px-4 py-2 rounded-full mb-4 font-bold">
+  ● {callStatus}
+</p>
 
       {patientEmail && (
         <p className="text-gray-300 mb-4 text-lg">
-          Calling: {patientEmail}
+        Calling: {patientName || patientEmail}
         </p>
       )}
 
