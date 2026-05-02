@@ -81,9 +81,15 @@ export default function DoctorDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-4xl font-bold text-blue-700 mb-8">
-        Doctor Dashboard
-      </h1>
+      <div className="flex items-center gap-4 mb-8">
+  <h1 className="text-4xl font-bold text-blue-700">
+    Doctor Dashboard
+  </h1>
+
+  <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-bold">
+    ● Live
+  </span>
+</div>>
 
       <div className="mb-10 bg-red-100 border-l-8 border-red-600 rounded-3xl shadow-xl p-6">
         <h2 className="text-2xl font-bold text-red-700 mb-2">
