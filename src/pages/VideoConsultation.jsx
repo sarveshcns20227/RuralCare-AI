@@ -70,12 +70,18 @@ const endCall = () => {
 
   navigate("/doctor");
 };
+const doctorName = "Dr. Sarvesh";
+const specialization = "Diabetologist";
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-8">
-      <h1 className="text-4xl font-bold text-white mb-4">
-        Video Consultation
-      </h1>
+      <h1 className="text-4xl font-bold text-white mb-2">
+  Video Consultation
+</h1>
+
+<p className="text-blue-400 mb-4 text-lg">
+  {doctorName} • {specialization}
+</p>
       <p className="bg-green-600 text-white px-4 py-2 rounded-full mb-4 font-bold">
   ● {callStatus}
 </p>
