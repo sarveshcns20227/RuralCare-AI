@@ -20,7 +20,7 @@ export default function DoctorDashboard() {
 
       setPatients(records);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching patients:", error);
     }
   };
 
@@ -38,7 +38,7 @@ export default function DoctorDashboard() {
 
       setAppointments(records);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching appointments:", error);
     }
   };
 
@@ -50,6 +50,23 @@ export default function DoctorDashboard() {
   const criticalPatients = patients.filter(
     (patient) => patient.status === "Critical"
   );
+
+  const handleCallPatient = (patient) => {
+    const email =
+      patient.userEmail ||
+      patient.patientEmail ||
+      patient.email ||
+      patient.uid ||
+      "";
+
+    if (!email) {
+      alert("Patient email not found. Check Firestore field name.");
+      console.log("Patient data:", patient);
+      return;
+    }
+
+    window.location.href = `/video?patient=${encodeURIComponent(email)}`;
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -82,8 +99,15 @@ export default function DoctorDashboard() {
           <tbody>
             {patients.map((patient) => (
               <tr key={patient.id} className="border-b">
-                <td className="py-4">{patient.userEmail}</td>
+                <td className="py-4">
+                  {patient.userEmail ||
+                    patient.patientEmail ||
+                    patient.email ||
+                    "No email"}
+                </td>
+
                 <td>{patient.glucose}</td>
+
                 <td
                   className={`font-bold ${
                     patient.status === "Critical"
@@ -99,7 +123,7 @@ export default function DoctorDashboard() {
                 <td>
                   {patient.status === "Critical" && (
                     <button
-                      onClick={() => (window.location.href = "/video")}
+                      onClick={() => handleCallPatient(patient)}
                       className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-xl"
                     >
                       Call Patient
