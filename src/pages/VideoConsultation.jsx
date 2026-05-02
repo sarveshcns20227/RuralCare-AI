@@ -6,6 +6,7 @@ export default function VideoConsultation() {
   const navigate = useNavigate();
   const [isMuted, setIsMuted] = useState(false);
   const [callStatus, setCallStatus] = useState("Connecting");
+  const [callEnded, setCallEnded] = useState(false);
 
   const [searchParams] = useSearchParams();
   const patientEmail = searchParams.get("patient");
@@ -68,11 +69,29 @@ const endCall = () => {
     });
   }
 
-  navigate("/doctor");
+  setCallEnded(true);
 };
 const doctorName = "Dr. Sarvesh";
 const specialization = "Diabetologist";
 
+if (callEnded) {
+  return (
+    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-8 text-center">
+      <h1 className="text-4xl font-bold text-white mb-4">Call Ended</h1>
+
+      <p className="text-gray-300 mb-8">
+        The video consultation has ended successfully.
+      </p>
+
+      <button
+        onClick={() => navigate("/doctor")}
+        className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold"
+      >
+        Back to Doctor Dashboard
+      </button>
+    </div>
+  );
+}
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-8">
       <h1 className="text-4xl font-bold text-white mb-2">
